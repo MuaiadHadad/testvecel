@@ -1,0 +1,18 @@
+TP3TAM/
+│
+├── app/
+│   ├── __init__.py  
+│   ├── app.py   Important
+│   ├── models.py  Important DB
+│   ├── run.py  Important para excutar APP
+│   ├── routes/
+│   │   ├── __init__.py Important /routes
+│   │   ├── user_routes.py
+│   │   ├── auth_routes.py
+│   │   ├── medicamento_routes.py
+│   │   └── administracao_routes.py
+│   └── static/ Lixo
+└── venv/ Conf Flask
+
+1) Para excutar APP é ...\venv\Scripts\activat
+2) python ...\run.py

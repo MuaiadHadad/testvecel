@@ -1,0 +1,51 @@
+package com.muaiad.myapplication;
+
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // URL da sua rota para obter medicamentos
+        String url = " http://192.168.1.3:5000/medicamento/obter_medicamentos";
+
+        // Token de acesso JWT
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwNDA4MTY0MCwianRpIjoiOTI3ZjNmNGEtMGM3MC00NDRhLWJhNWYtZWE5MTk4NmU3ODg3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzA0MDgxNjQwLCJjc3JmIjoiYjBiMWQ4N2QtY2E5NS00NzcwLWJlMzgtOGUxNmFjMjI5ZGQ0IiwiZXhwIjoxNzA0MDg1MjQwfQ.vsH0c0KAAsVIOnurjciCc4BtqbolY0TbjDNxOfHNH0k";
+
+        // Execute a AsyncTask para fazer a solicitação em segundo plano
+        new HttpRequestTask().execute(url, accessToken);
+    }
+
+    private class HttpRequestTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String url = params[0];
+            String accessToken = params[1];
+
+            try {
+                // Envia a solicitação GET com o cabeçalho de autorização
+                return HttpRequest.sendGet(url, "Authorization: " + accessToken);
+            } catch (IOException e) {
+                Log.e("HttpRequestTask", "Erro na solicitação HTTP", e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Faça algo com a resposta, por exemplo, exiba-a em um TextView
+            if (result != null) {
+                Log.d("HttpRequestTask", "Resposta: " + result);
+            } else {
+                Log.e("HttpRequestTask", "Erro ao obter a resposta");
+            }
+        }
+    }
+}
